@@ -1,0 +1,16 @@
+{% extends "food/base.html" %}
+{% block title %}Order placed{% endblock %}
+{% block content %}
+<section class="card">
+    <h1>Thank you, {{ order.customer_name }}!</h1>
+    <p>Your demo order <strong>#{{ order.id }}</strong> has been placed.</p>
+    <p>Status: <strong>{{ order.get_status_display }}</strong></p>
+    <h2>Order summary</h2>
+    {% for item in order.items.all %}
+    <p>{{ item.food_name }} * {{ item.quantity }} — ₹{{ item.line_total }}</p>
+    {% endfor %}
+    <h2>Total: ₹{{ order.total }}</h2>
+    <p class="muted">This is a learning project; no real payment was processed.</p>
+    <a class="button" href="{% url 'food_list' %}">Back to menu</a>
+</section>
+{% endblock %}

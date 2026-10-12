@@ -1,0 +1,33 @@
+{% extends "food/base.html" %}
+{% block title %}Menu | My Restaurant{% endblock %}
+{% block content %}
+<h1>Our Menu</h1>
+<form method="get">
+    <label for="q">Search food</label>
+    <input id="q" type="search" name="q" value="{{ query }}" placeholder="e.g. pizza">
+    <label for="category">Category</label>
+    <select id="category" name="category">
+        <option value="">All categories</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Search menu</button>
+    <a class="button secondary" href="{% url 'food_list' %}">Clear</a>
+</form>
+{% if foods %}
+<div class="grid">
+    {% for food in foods %}
+    <article class="card">
+        <h2><a href="{% url 'food_detail' food.id %}">{{ food.name }}</a></h2>
+        {% if food.category %}<p class="muted">{{ food.category.name }}</p>{% endif %}
+        <p>{{ food.description|default:"Freshly prepared."|truncatewords:20 }}</p>
+        <p class="price">₹{{ food.price }}</p>
+        <a class="button" href="{% url 'food_detail' food.id %}">View details</a>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<p>No available food matched your search.</p>
+{% endif %}
+{% endblock %}

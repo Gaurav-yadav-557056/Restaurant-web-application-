@@ -1,0 +1,38 @@
+{% extends "food/base.html" %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
+<h1>Your Cart</h1>
+{% if items %}
+<table>
+    <thead><tr><th>Food</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th>Action</th></tr></thead>
+    <tbody>
+    {% for item in items %}
+    <tr>
+        <td><a href="{% url 'food_detail' item.food.id %}">{{ item.food.name }}</a></td>
+        <td>₹{{ item.food.price }}</td>
+        <td>
+            <form method="post" action="{% url 'cart_update' item.food.id %}">
+                {% csrf_token %}
+                <input style="max-width:90px" type="number" name="quantity" min="0" max="99" value="{{ item.quantity }}" required>
+                <button type="submit">Update</button>
+            </form>
+            <small class="muted">Set quantity to 0 to remove.</small>
+        </td>
+        <td>₹{{ item.line_total }}</td>
+        <td>
+            <form method="post" action="{% url 'cart_remove' item.food.id %}">
+                {% csrf_token %}
+                <button type="submit">Remove</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<h2>Total: ₹{{ total }}</h2>
+<a class="button" href="{% url 'checkout' %}">Proceed to checkout</a>
+{% else %}
+<p>Your cart is empty.</p>
+<a class="button" href="{% url 'food_list' %}">Browse menu</a>
+{% endif %}
+{% endblock %}

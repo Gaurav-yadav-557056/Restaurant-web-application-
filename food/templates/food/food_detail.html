@@ -1,0 +1,24 @@
+{% extends "food/base.html" %}
+{% block title %}{{ food.name }} | My Restaurant{% endblock %}
+{% block content %}
+<p><a href="{% url 'food_list' %}">← Back to menu</a></p>
+<section class="card">
+    {% if food.category %}<p class="muted">{{ food.category.name }}</p>{% endif %}
+    <h1>{{ food.name }}</h1>
+    <p>{{ food.description|default:"Freshly prepared and ready to enjoy." }}</p>
+    <p class="price">₹{{ food.price }}</p>
+    <form method="post" action="{% url 'cart_add' food.id %}">
+        {% csrf_token %}
+        <label for="quantity">Quantity</label>
+        <input id="quantity" type="number" name="quantity" min="1" max="99" value="1" required>
+        <button type="submit">Add to cart</button>
+    </form>
+    {% if user.is_staff %}
+    <p><a class="button secondary" href="{% url 'edit_food' food.id %}">Edit food</a></p>
+    <form method="post" action="{% url 'delete_food' food.id %}" onsubmit="return confirm('Delete this food item?');">
+        {% csrf_token %}
+        <button type="submit">Delete food</button>
+    </form>
+    {% endif %}
+</section>
+{% endblock %}

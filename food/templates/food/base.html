@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}My Restaurant{% endblock %}</title>
+    <style>:root { --ink: #202124; --muted: #666; --line: #e5e7eb; --brand: #a33b20; --bg: #fffaf5; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.55; }
+        header { background: white; border-bottom: 1px solid var(--line); }
+        .nav, main, footer { max-width: 1050px; margin: auto; padding: 16px 22px; }
+        .nav { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+        .brand { font-size: 1.25rem; font-weight: 800; color: var(--brand); text-decoration: none; }
+        nav { display: flex; gap: 16px; flex-wrap: wrap; }
+        a { color: var(--brand); }
+        nav a { text-decoration: none; font-weight: 600; }
+        .hero { background: #f7e4d4; padding: 42px 28px; border-radius: 18px; margin: 20px 0; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 0 0 12px; }
+        .muted { color: var(--muted); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+        .card { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+        .price { font-size: 1.2rem; font-weight: 800; }
+        .button, button { display: inline-block; border: 0; border-radius: 9px; padding: 10px 15px; background: var(--brand); color: white; font-weight: 700; text-decoration: none; cursor: pointer; }
+        .button.secondary { background: #eee; color: #222; }
+        input, select, textarea { display: block; width: 100%; max-width: 520px; padding: 10px; border: 1px solid #c9cdd2; border-radius: 8px; margin: 5px 0 14px; font: inherit; }
+        label { font-weight: 600; }
+        .message { padding: 10px 14px; border-radius: 8px; background: #e8f5e9; margin: 10px 0; }
+        .errorlist { color: #b00020; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--line); }
+        footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 35px; }</style>
+</head>
+<body>
+<header>
+    <div class="nav">
+        <a class="brand" href="{% url 'home' %}">🍽 My Restaurant</a>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'food_list' %}">Menu</a>
+            <a href="{% url 'cart_detail' %}">Cart</a>
+            {% if user.is_staff %}
+                <a href="{% url 'add_food' %}">Add food</a>
+                <a href="/admin/">Admin</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+<main>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+<footer>My Restaurant · Django learning project · No real payments are processed.</footer>
+</body>
+</html>

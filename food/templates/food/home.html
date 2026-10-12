@@ -1,0 +1,25 @@
+{% extends "food/base.html" %}
+{% block title %}Home | My Restaurant{% endblock %}
+{% block content %}
+<section class="hero">
+    <p>Fresh food. Simple ordering.</p>
+    <h1>Good food, made easy.</h1>
+    <p>Explore the menu, add your favourites to the cart, and place a demo order.</p>
+    <a class="button" href="{% url 'food_list' %}">Explore menu</a>
+</section>
+<h2>Featured menu</h2>
+{% if featured_foods %}
+<div class="grid">
+    {% for food in featured_foods %}
+    <article class="card">
+        <h3><a href="{% url 'food_detail' food.id %}">{{ food.name }}</a></h3>
+        <p class="muted">{{ food.description|default:"Prepared fresh for you."|truncatewords:18 }}</p>
+        <p class="price">₹{{ food.price }}</p>
+        <a class="button" href="{% url 'food_detail' food.id %}">View item</a>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<p>No food items yet. Add categories and foods through the admin panel first.</p>
+{% endif %}
+{% endblock %}

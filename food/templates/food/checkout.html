@@ -1,0 +1,19 @@
+{% extends "food/base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<h1>Checkout</h1>
+<div class="card">
+    <h2>Order summary</h2>
+    {% for item in items %}
+    <p>{{ item.food.name }} × {{ item.quantity }} — ₹{{ item.line_total }}</p>
+    {% endfor %}
+    <h3>Total: ₹{{ total }}</h3>
+</div>
+<h2>Your details</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="muted">Demo checkout only. No payment is taken.</p>
+    <button type="submit">Place demo order</button>
+</form>
+{% endblock %}
